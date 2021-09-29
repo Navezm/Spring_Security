@@ -15,6 +15,7 @@ import java.time.LocalDate;
 @Table(name = "Security_User_Role")
 public class UserRole {
     @EmbeddedId
+    @Getter @Setter
     private UserRoleId id;
 
     @Column(nullable = false)
@@ -25,11 +26,29 @@ public class UserRole {
 
     @ManyToOne(targetEntity = Role.class)
     @MapsId(value = "roleId")
+    @Getter @Setter
     private Role role;
 
     @ManyToOne(targetEntity = User.class)
     @MapsId(value = "userId")
+    @Getter @Setter
     private User user;
+
+    public UserRole() {
+        this.id = new UserRoleId();
+    }
+
+    public UserRole(User user) {
+        this();
+//        this.id.userId = user.getId();
+        this.user = user;
+    }
+
+    public UserRole(User user, Role role) {
+        this(user);
+//        this.id.roleId = role.getId();
+        this.role = role;
+    }
 
     @Embeddable
     @EqualsAndHashCode
@@ -39,5 +58,10 @@ public class UserRole {
         private Long userId;
         @Getter @Setter
         private Long roleId;
+    }
+
+    @PrePersist
+    public void persistAction() {
+        this.startedAt = LocalDate.now();
     }
 }
