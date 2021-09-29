@@ -17,6 +17,9 @@ public class Groupe {
     @Getter @Setter
     private Long id;
 
+    @Getter @Setter
+    private String label;
+
     @ManyToMany(targetEntity = Role.class)
     private List<Role> roles;
 }

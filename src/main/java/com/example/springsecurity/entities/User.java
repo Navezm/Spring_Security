@@ -8,6 +8,7 @@ import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
 
 import javax.persistence.*;
+import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.List;
@@ -16,21 +17,19 @@ import java.util.List;
 @EqualsAndHashCode
 @ToString
 @Table(name = "Security_User")
-public class User implements UserDetails {
+public class User implements UserDetails, Serializable {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Getter @Setter
     private Long id;
     @Getter @Setter
-    private String name;
+    private String username;
     @Setter
     private String password;
 
     @ManyToOne(targetEntity = Groupe.class)
+    @Getter @Setter
     private Groupe group;
-
-    @ManyToMany(targetEntity = Role.class)
-    private List<Role> roles = new ArrayList<>();
 
     @Override
     public Collection<? extends GrantedAuthority> getAuthorities() {
